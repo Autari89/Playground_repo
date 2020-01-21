@@ -1,10 +1,10 @@
-# Foobar
+# Sample Code
 
-Foobar is a Python library for dealing with word pluralization.
+It represents just a sample repository to play around.
 
 ## Installation
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
+Here we can write installation instruction and possibly add external links usign square brakets [google](https://www.google.com/). The one below is a bash environment
 
 ```bash
 pip install foobar
@@ -19,6 +19,10 @@ foobar.pluralize('word') # returns 'words'
 foobar.pluralize('goose') # returns 'geese'
 foobar.singularize('phenomena') # returns 'phenomenon'
 ```
+
+### Subsection
+
+It is also possible to add a further subsection by increasing the number of the # before entering the name
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
