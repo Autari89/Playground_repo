@@ -9,8 +9,7 @@ def lambda_handler(event, context):
 
     request_manager = Request_manager(name, chat_id)
     request_manager.set_chat_text(text)
-
-    request_manager.build_answer()
+    request_manager.process_request()
 
     if field_errors:
         raise Exception(json.dumps({'field_errors': field_errors}))
