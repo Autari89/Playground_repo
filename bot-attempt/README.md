@@ -6,32 +6,22 @@ The functionalities of the bot are really basic. In the original idea it was mea
 
 Eventually, I made peace with my mind and accepted what I could get: I was just trying to learn something new about telegram bot and engage myself in some python programming. I am well aware that this is not the optimal solution but that it was not my goal, as the previous sentence suggests.
 
-## Preparatoy steps
+## Preparatory steps
 
 Since I ended up here trying to learn something new, I followed blogs/articles from other people who knew something about the topic. As far as I remember (since I'm writing this overview almost one year later I did the actual implementation), I found all the necessary information related to setting up the environment in Amazon AWS at this [link](https://dev.to/nqcm/-building-a-telegram-bot-with-aws-api-gateway-and-aws-lambda-27fg).
 
-## Usage
+### Add external package dependancies
 
-```bash
-pip install foobar
-```
+In most of the basic guides related to telegram bot, the mentioned easiest way to handle communication is using python library *requests*. The *requests* seems to be no more available in Botocore in AWS: as a result it must be added as external dependancy in the package that contains the core code of the lambda function uploaded to AWS. In order to so so, the best way is to follow the official [AWS Guidelines](https://docs.aws.amazon.com/lambda/latest/dg/python-package.html#python-package-dependencies) which provides a thorough explanantion about how to include an external package to be used and upload it to the AWS environment. Up to now, I always uploaded the code as a **.zip** file directly from the Lambda section in AWS, containing both the code and the external dependancies.
+
+Once the external dependacies have been correctly uploaded to the Lambda environment it is possible to easily import them within the functional code by simply adding the following piece of code when external libraries are needed.
 
 ```python
-import foobar
+import os
+import sys
 
-foobar.pluralize('word') # returns 'words'
-foobar.pluralize('goose') # returns 'geese'
-foobar.singularize('phenomena') # returns 'phenomenon'
+here = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(os.path.join(here, "./vendored"))
+import requests
 ```
-
-### Subsection
-
-It is also possible to add a further subsection by increasing the number of the # before entering the name
-
-## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-
-Please make sure to update tests as appropriate.
-
-## License
-[MIT](https://choosealicense.com/licenses/mit/)
+In this way, assuming the external dependancies are stored in *vendored* folder, it is possible to import them in the current file and make use of them 
