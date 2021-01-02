@@ -51,4 +51,12 @@ new_url = dic_api_url + word_to_translate
 response = requests.get(new_url, headers=headers)
 ```
 Basic documentation related to requests can be found [here](https://developer.oxforddictionaries.com/documentation/making-requests-to-the-api). By implementing this solution it is possible to have a fixed string that contains the basic URL and append every time the specific word to be translated.
+However, Oxford dictionary API allows more refined way to retrieve information from its database: a deeper overview of the API possibilities can be found at this [link](https://developer.oxforddictionaries.com/documentation#!/Entries/get_entries_source_lang_word_id).
+In particular, this is possbile by simply adding a *field* specification in the url request: the variable *dic_api_url* metioned in the previous code snippet will become something like this
+
+```python 
+dic_api_url = 'https://od-api.oxforddictionaries.com:443/api/v2/entries/'  + language + '/word_id?fields=definitions&strictMatch=false'
+
+```
+where *word_id* represents the word whose definition we are looking for. Additionally, at first sigth it appears clear that two or more fields can be combined in the request. In order to do so it is possible to simply apply the boolean logic to the possible entries. In order to know exactly which are the allowed fields to be retrieved it is possible to make use of the previously menioned link.
 
