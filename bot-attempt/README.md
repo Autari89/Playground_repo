@@ -9,6 +9,12 @@ Eventually, I made peace with my mind and accepted what I could get: I was just 
 ## Preparatory steps
 
 Since I ended up here trying to learn something new, I followed blogs/articles from other people who knew something about the topic. As far as I remember (since I'm writing this overview almost one year later I did the actual implementation), I found all the necessary information related to setting up the environment in Amazon AWS at this [link](https://dev.to/nqcm/-building-a-telegram-bot-with-aws-api-gateway-and-aws-lambda-27fg).
+As suggested in many articles, it is better to store all the personal information in local variables (like the personal token of the bot or the key for the API) and let the code retrieve them when necessary. AWS Lambda function allows this possibility, since it contains a dedicated space for environmental variables that can be easily accessed from the code by calling a function provided by the os library:
+
+```python
+telegram_token = os.environ['TELEGRAM_BOT_TOKEN']
+```
+Further readings can be found in the dedicated [documentation](https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars.html).
 
 ### Add external package dependancies
 
@@ -25,3 +31,32 @@ sys.path.append(os.path.join(here, "./vendored"))
 import requests
 ```
 In this way, assuming the external dependancies are stored in *vendored* folder, it is possible to import them in the current file and make use of them 
+
+### Add vocabulary API
+
+As already mentioned, the final choice fell on the Oxford dictionary. The first step consists in the registration to the [Oxford website](https://developer.oxforddictionaries.com/) to obtain the API key necessary to make requests from the bot (and each kind of application in general). The plan I chose is the completaly free one, called Prototype: since I'm just playing around with telegram bot and its accessories, I thought it was not worth it to spend money on it. After the requested information are entered, the *tuple* (API Base URL, Application ID, Application Keys) is available in the Oxford personal account. The personal information should be stored in environmental variables accessible by the Lambda function and not directly written in the code. Assuming this, the snippet code to make use of this API should be something like this:
+
+```python 
+app_id = os.environ['OXFORD_APP_ID']
+app_key = os.environ['OXFORD_APP_KEY']
+language = 'en-gb'
+dic_api_url = 'https://od-api.oxforddictionaries.com:443/api/v2/entries/'  + language + '/'
+
+headers = {
+    'app_id': f"{app_id}",
+    'app_key': f"{app_key}"
+}
+
+new_url = dic_api_url + word_to_translate
+response = requests.get(new_url, headers=headers)
+```
+Basic documentation related to requests can be found [here](https://developer.oxforddictionaries.com/documentation/making-requests-to-the-api). By implementing this solution it is possible to have a fixed string that contains the basic URL and append every time the specific word to be translated.
+However, Oxford dictionary API allows more refined way to retrieve information from its database: a deeper overview of the API possibilities can be found at this [link](https://developer.oxforddictionaries.com/documentation#!/Entries/get_entries_source_lang_word_id).
+In particular, this is possbile by simply adding a *field* specification in the url request: the variable *dic_api_url* metioned in the previous code snippet will become something like this
+
+```python 
+dic_api_url = 'https://od-api.oxforddictionaries.com:443/api/v2/entries/'  + language + '/word_id?fields=definitions&strictMatch=false'
+
+```
+where *word_id* represents the word whose definition we are looking for. Additionally, at first sigth it appears clear that two or more fields can be combined in the request. In order to do so it is possible to simply apply the boolean logic to the possible entries. In order to know exactly which are the allowed fields to be retrieved it is possible to make use of the previously menioned link.
+
