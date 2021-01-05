@@ -29,6 +29,11 @@ class TestRequestManager(unittest.TestCase):
         self.assertEqual(sender_name, self.request_manager.sender_name)
         self.assertEqual(chat_id, self.request_manager.chat_id)
         self.assertEqual(chat_text, self.request_manager.chat_text)
+    
+    def test_clear_text(self):
+        empty_list = []
+        self.request_manager.clear_text()
+        self.assertEqual(empty_list, self.request_manager.final_message)
 
 if __name__ == '__main__':
     unittest.main()
