@@ -27,4 +27,4 @@ jobs:
           python-version: '3.6'
       - name: Test with unittest
         run: |
-          python tests/request_manager_test.py 
+          python bot-attempt/tests/request_manager_test.py 

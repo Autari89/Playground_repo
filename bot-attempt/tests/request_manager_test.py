@@ -5,7 +5,7 @@ import sys
 os.environ["TELEGRAM_BOT_TOKEN"] = "TELEGRAM_BOT_TOKEN"
 os.environ["OXFORD_APP_ID"] = "OXFORD_APP_ID"
 os.environ["OXFORD_APP_KEY"] = "OXFORD_APP_KEY"
-sys.path.append('send-telegram-message')
+sys.path.append('bot-attempt/send-telegram-message')
 
 from request_manager import Request_manager
 
