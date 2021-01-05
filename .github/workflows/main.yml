@@ -25,6 +25,10 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.6'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
       - name: Test with unittest
         run: |
           python bot-attempt/tests/request_manager_test.py 
